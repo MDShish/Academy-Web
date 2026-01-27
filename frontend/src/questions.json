@@ -1,0 +1,302 @@
+[
+    {
+        "id": 1,
+        "text": "I enjoy repairing household appliances or electronics.",
+        "category": "Realistic"
+    },
+    {
+        "id": 2,
+        "text": "I like to study how plants or animals grow.",
+        "category": "Investigative"
+    },
+    {
+        "id": 3,
+        "text": "I enjoy sketching, painting, or designing logos.",
+        "category": "Artistic"
+    },
+    {
+        "id": 4,
+        "text": "I like volunteering to help people in need.",
+        "category": "Social"
+    },
+    {
+        "id": 5,
+        "text": "I enjoy leading a team to win a school competition.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 6,
+        "text": "I like keeping my notes and files very organized.",
+        "category": "Conventional"
+    },
+    {
+        "id": 7,
+        "text": "I prefer working outdoors rather than in an office.",
+        "category": "Realistic"
+    },
+    {
+        "id": 8,
+        "text": "I enjoy solving difficult math puzzles or logic riddles.",
+        "category": "Investigative"
+    },
+    {
+        "id": 9,
+        "text": "I like writing stories, poems, or blog posts.",
+        "category": "Artistic"
+    },
+    {
+        "id": 10,
+        "text": "I enjoy teaching or explaining concepts to others.",
+        "category": "Social"
+    },
+    {
+        "id": 11,
+        "text": "I like to persuade others to agree with my ideas.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 12,
+        "text": "I enjoy working with numbers and financial records.",
+        "category": "Conventional"
+    },
+    {
+        "id": 13,
+        "text": "I am good at using tools like hammers or drills.",
+        "category": "Realistic"
+    },
+    {
+        "id": 14,
+        "text": "I like to perform experiments in a science lab.",
+        "category": "Investigative"
+    },
+    {
+        "id": 15,
+        "text": "I enjoy playing a musical instrument or singing.",
+        "category": "Artistic"
+    },
+    {
+        "id": 16,
+        "text": "I like to work in a community service project.",
+        "category": "Social"
+    },
+    {
+        "id": 17,
+        "text": "I enjoy starting a small business or selling products.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 18,
+        "text": "I prefer following a set routine at work.",
+        "category": "Conventional"
+    },
+    {
+        "id": 19,
+        "text": "I enjoy building things from wood or metal.",
+        "category": "Realistic"
+    },
+    {
+        "id": 20,
+        "text": "I like researching the causes of complex diseases.",
+        "category": "Investigative"
+    },
+    {
+        "id": 21,
+        "text": "I enjoy taking artistic photographs or videos.",
+        "category": "Artistic"
+    },
+    {
+        "id": 22,
+        "text": "I like helping friends with their personal problems.",
+        "category": "Social"
+    },
+    {
+        "id": 23,
+        "text": "I enjoy managing a project from start to finish.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 24,
+        "text": "I like checking documents for errors and accuracy.",
+        "category": "Conventional"
+    },
+    {
+        "id": 25,
+        "text": "I prefer physical work over mental desk work.",
+        "category": "Realistic"
+    },
+    {
+        "id": 26,
+        "text": "I enjoy analyzing data to find patterns.",
+        "category": "Investigative"
+    },
+    {
+        "id": 27,
+        "text": "I like to decorate a room based on a theme.",
+        "category": "Artistic"
+    },
+    {
+        "id": 28,
+        "text": "I enjoy working as a group leader or counselor.",
+        "category": "Social"
+    },
+    {
+        "id": 29,
+        "text": "I am interested in law or political discussions.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 30,
+        "text": "I like to use computers to store and track data.",
+        "category": "Conventional"
+    },
+    {
+        "id": 31,
+        "text": "I like to operate heavy machinery or engines.",
+        "category": "Realistic"
+    },
+    {
+        "id": 32,
+        "text": "I enjoy reading about technology and space.",
+        "category": "Investigative"
+    },
+    {
+        "id": 33,
+        "text": "I like to perform in plays or stage shows.",
+        "category": "Artistic"
+    },
+    {
+        "id": 34,
+        "text": "I enjoy caring for children or elderly people.",
+        "category": "Social"
+    },
+    {
+        "id": 35,
+        "text": "I like to compete for high stakes or positions.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 36,
+        "text": "I enjoy working with spreadsheets like Excel.",
+        "category": "Conventional"
+    },
+    {
+        "id": 37,
+        "text": "I like to grow crops or take care of farm animals.",
+        "category": "Realistic"
+    },
+    {
+        "id": 38,
+        "text": "I enjoy investigating why things work the way they do.",
+        "category": "Investigative"
+    },
+    {
+        "id": 39,
+        "text": "I like to create digital art or 3D models.",
+        "category": "Artistic"
+    },
+    {
+        "id": 40,
+        "text": "I enjoy organizing events to help charities.",
+        "category": "Social"
+    },
+    {
+        "id": 41,
+        "text": "I like to influence people to change their opinions.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 42,
+        "text": "I enjoy keeping track of inventory or schedules.",
+        "category": "Conventional"
+    },
+    {
+        "id": 43,
+        "text": "I prefer manual trades like plumbing or electrical.",
+        "category": "Realistic"
+    },
+    {
+        "id": 44,
+        "text": "I enjoy theoretical discussions about the universe.",
+        "category": "Investigative"
+    },
+    {
+        "id": 45,
+        "text": "I like to fashion my own clothes or accessories.",
+        "category": "Artistic"
+    },
+    {
+        "id": 46,
+        "text": "I enjoy being a mental health advocate or helper.",
+        "category": "Social"
+    },
+    {
+        "id": 47,
+        "text": "I like to negotiate deals or handle business sales.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 48,
+        "text": "I prefer a stable job with clear instructions.",
+        "category": "Conventional"
+    },
+    {
+        "id": 49,
+        "text": "I enjoy working with bicycles or motor vehicles.",
+        "category": "Realistic"
+    },
+    {
+        "id": 50,
+        "text": "I like solving mysteries or forensic cases.",
+        "category": "Investigative"
+    },
+    {
+        "id": 51,
+        "text": "I enjoy experimental cooking or food design.",
+        "category": "Artistic"
+    },
+    {
+        "id": 52,
+        "text": "I like to mediate conflicts between friends.",
+        "category": "Social"
+    },
+    {
+        "id": 53,
+        "text": "I enjoy being the spokesperson for a group.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 54,
+        "text": "I like to verify figures for accounting or bills.",
+        "category": "Conventional"
+    },
+    {
+        "id": 55,
+        "text": "I prefer working on a construction site.",
+        "category": "Realistic"
+    },
+    {
+        "id": 56,
+        "text": "I enjoy using a microscope to study small things.",
+        "category": "Investigative"
+    },
+    {
+        "id": 57,
+        "text": "I like to design websites or mobile app layouts.",
+        "category": "Artistic"
+    },
+    {
+        "id": 58,
+        "text": "I enjoy participating in social awareness campaigns.",
+        "category": "Social"
+    },
+    {
+        "id": 59,
+        "text": "I like to take risks to achieve a business goal.",
+        "category": "Enterprising"
+    },
+    {
+        "id": 60,
+        "text": "I prefer filing and document processing tasks.",
+        "category": "Conventional"
+    }
+]
