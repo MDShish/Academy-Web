@@ -5,7 +5,10 @@ import questionsData from './questions.json';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL;
+
+axios.post(`${API_BASE}/api/admin/login`, data)
+
 
 // --- Sub-Components ---
 
@@ -599,3 +602,4 @@ function App() {
 }
 
 export default App;
+
