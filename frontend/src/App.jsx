@@ -5,10 +5,7 @@ import questionsData from './questions.json';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
 
-const API_BASE = import.meta.env.VITE_API_URL;
-
-
-
+const API_BASE = 'http://localhost:8000';
 
 // --- Sub-Components ---
 
@@ -237,14 +234,125 @@ const Questionnaire = ({ studentName, onComplete }) => {
   );
 };
 
+const TRAIT_CONTENT = {
+  "Realistic": {
+    variations: [
+      {
+        description: "You're a natural-born Engineer! You have a gifted hand for building, repairing, and understanding how complex machines click together.",
+        suggestion: "Consider Civil Engineering, Mechanical Repair, Robotics, or specialized Aviation technology."
+      },
+      {
+        description: "You're a technical Pioneer! You thrive when working hands-on with tools and creating physical solutions to everyday problems.",
+        suggestion: "Explore paths in Architecture, Construction Management, Agriculture, or Automotive Engineering."
+      },
+      {
+        description: "You're a master of the Physical World! You prefer activities that involve systematic manipulation of objects, tools, or animals.",
+        suggestion: "You'd excel as a Wildlife Officer, Sports Scientist, Marine Technician, or Industrial Designer."
+      }
+    ],
+    icon: <Rocket className="w-10 h-10 text-pink-500" />
+  },
+  "Investigative": {
+    variations: [
+      {
+        description: "You're a brilliant Scientist! Your mind naturally seeks to observe, learn, and evaluate through careful logic and research.",
+        suggestion: "Consider a career as a Surgeon, Research Scientist, Data Analyst, or Forensic Expert."
+      },
+      {
+        description: "You're a world-class Strategist! You enjoy solving abstract problems and digging deep into the 'why' behind everything.",
+        suggestion: "Explore paths in Software Engineering, Psychology, Astrophysics, or Market Research."
+      },
+      {
+        description: "You're an intellectual Explorer! You find fulfillment in discovering new facts and pushing the boundaries of human knowledge.",
+        suggestion: "You'd be amazing as a Philosopher, Historian, Epidemiologist, or Cybersecurity Architect."
+      }
+    ],
+    icon: <Sparkles className="w-10 h-10 text-blue-500" />
+  },
+  "Artistic": {
+    variations: [
+      {
+        description: "You're a creative Visionary! You thrive in unstructured environments where you can express your unique perspective and original ideas.",
+        suggestion: "Consider Graphic Design, Film Directing, Fashion Styling, or Novel Writing."
+      },
+      {
+        description: "You're a master Performer! You have a natural flair for visual or performing arts and value self-expression above all else.",
+        suggestion: "Explore paths in Music Production, Fine Arts, Theater, or Interior Architecture."
+      },
+      {
+        description: "You're an Innovative Designer! You enjoy bringing beautiful concepts to life and challenging the status quo with your creativity.",
+        suggestion: "You'd excel as an Advertising Creative, User Experience (UX) Designer, or Landscape Architect."
+      }
+    ],
+    icon: <Sparkles className="w-10 h-10 text-purple-500" />
+  },
+  "Social": {
+    variations: [
+      {
+        description: "You're a gifted Educator! You find your true calling in helping, teaching, and developing the potential of those around you.",
+        suggestion: "Consider paths in Teaching, Counseling, Healthcare Management, or Humanitarian Work."
+      },
+      {
+        description: "You're a compassionate Healer! You have a natural ability to empathize with others and provide the support they need to thrive.",
+        suggestion: "Explore careers in Medicine, Nursing, Physical Therapy, or Occupational Psychology."
+      },
+      {
+        description: "You're a community Leader! You enjoy collaborating with people to solve social issues and improve the quality of life for others.",
+        suggestion: "You'd be amazing in Public Relations, Social Work, Non-Profit Leadership, or Human Resources."
+      }
+    ],
+    icon: <Heart className="w-10 h-10 text-red-500" />
+  },
+  "Enterprising": {
+    variations: [
+      {
+        description: "You're a bold Entrepreneur! You have the drive and charisma to lead projects, influence people, and turn ideas into profitable realities.",
+        suggestion: "Consider high-stakes paths in Business Management, Startup Leadership, Law, or Sales."
+      },
+      {
+        description: "You're a strategic Businessman! You enjoy the challenge of competition and the satisfaction of reaching ambitious financial goals.",
+        suggestion: "Explore careers in Venture Capital, Marketing Strategy, Corporate Law, or Stock Trading."
+      },
+      {
+        description: "You're a dynamic Politician! You have a natural talent for public speaking and persuading others to join your vision for the future.",
+        suggestion: "You'd excel in Political Science, International Relations, Public Policy, or Real Estate Development."
+      }
+    ],
+    icon: <Rocket className="w-10 h-10 text-orange-500" />
+  },
+  "Conventional": {
+    variations: [
+      {
+        description: "You're an organizational Expert! You appreciate precision, order, and working within clearly defined systems and data structures.",
+        suggestion: "Consider vital roles in Finance, Accounting, Actuarial Science, or Database Administration."
+      },
+      {
+        description: "You're a methodical Analyst! You have a sharp eye for detail and excel at ensuring everything runs smoothly and accurately.",
+        suggestion: "Explore paths in Cybersecurity, Quality Assurance, Logistics Planning, or Technical Writing."
+      },
+      {
+        description: "You're a master Coordinator! You find satisfaction in managing complex information and keeping operations perfectly organized.",
+        suggestion: "You'd be amazing as a Compliance Officer, Office Manager, Information Architect, or Librarian."
+      }
+    ],
+    icon: <Sparkles className="w-10 h-10 text-green-500" />
+  }
+};
+
 const Results = ({ studentData, reportId }) => {
   const [scores, setScores] = useState(null);
   const [dominant, setDominant] = useState('');
+  const [stream, setStream] = useState('');
+  const [variationIndex, setVariationIndex] = useState(0);
 
   useEffect(() => {
     if (studentData?.scores && typeof studentData.scores === 'object') {
       setScores(studentData.scores);
       setDominant(studentData.dominant_trait || 'General');
+      setStream(studentData.suggested_stream || 'Commerce');
+
+      // Randomly pick one of the 3 variations
+      setVariationIndex(Math.floor(Math.random() * 3));
       confetti({
         particleCount: 150,
         spread: 70,
@@ -265,13 +373,17 @@ const Results = ({ studentData, reportId }) => {
     </div>
   );
 
+  const traitInfo = TRAIT_CONTENT[dominant] || TRAIT_CONTENT["Realistic"];
+  const variation = (traitInfo.variations && traitInfo.variations[variationIndex]) || { description: "", suggestion: "" };
+  const streamKey = stream.toLowerCase();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-4xl mx-auto w-full px-4 space-y-6 pb-20"
     >
-      <div className="card-white text-center max-w-none">
+      <div className="card-white text-center">
         <div className="flex justify-center mb-4">
           <div className="p-4 bg-yellow-100 rounded-full">
             <Sparkles className="w-10 h-10 text-yellow-500 fill-yellow-500" />
@@ -281,19 +393,27 @@ const Results = ({ studentData, reportId }) => {
         <p className="text-gray-500 mt-2">Here's a map of your superpowers</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card-white max-w-none">
+      <div className="results-layout-grid">
+        <div className={`glass-card glass-card-${streamKey} text-center`}>
+          <span className={`stream-badge ${streamKey}-badge`}>Recommended Stream</span>
+          <h2 className="text-4xl font-black text-gray-800 mb-2">{stream}</h2>
+          <p className="text-gray-600 font-medium">
+            Based on our expert analysis, the <strong>{stream}</strong> stream perfectly aligns with your natural talents and interests.
+          </p>
+        </div>
+
+        <div className="card-white">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800">
-            <BarChart3 className="w-6 h-6 text-pink-500" /> Your Trait Profile
+            <BarChart3 className="w-6 h-6 text-pink-500" /> Trait Profile
           </h3>
-          <div className="space-y-5">
+          <div className="space-y-4">
             {Object.entries(scores).map(([trait, score], i) => (
               <div key={trait}>
-                <div className="flex justify-between mb-2">
-                  <span className="font-bold text-gray-700">{trait}</span>
-                  <span className="text-pink-600 font-bold">{score.toFixed(1)}%</span>
+                <div className="flex justify-between mb-1">
+                  <span className="font-bold text-gray-700 text-sm">{trait}</span>
+                  <span className="text-pink-600 font-bold text-sm">{score.toFixed(0)}%</span>
                 </div>
-                <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${score}%` }}
@@ -306,40 +426,44 @@ const Results = ({ studentData, reportId }) => {
           </div>
         </div>
 
-        <div className="card-white max-w-none flex flex-col justify-between">
+        <div className="card-white">
           <div>
-            <h3 className="text-xl font-bold mb-6 text-gray-800">Perfect Pathway</h3>
-            <div className="bg-pink-50 p-8 rounded-3xl border-2 border-dashed border-pink-200 text-center">
-              <div className="bg-white w-20 h-20 rounded-2xl shadow-md mx-auto mb-6 flex items-center justify-center">
-                <Rocket className="w-10 h-10 text-pink-500" />
+            <h3 className="text-xl font-bold mb-4 text-gray-800">Perfect Pathway</h3>
+            <div className="bg-pink-50 p-6 rounded-3xl border-2 border-dashed border-pink-200 text-center">
+              <div className="bg-white w-16 h-16 rounded-2xl shadow-md mx-auto mb-4 flex items-center justify-center">
+                {traitInfo.icon}
               </div>
-              <h2 className="text-2xl font-black text-pink-600 uppercase mb-4">{dominant}</h2>
-              <p className="text-gray-600 leading-relaxed font-medium">
-                You're a natural-born <strong>{dominant}</strong>! This means you'll thrive in streams that let you explore your passions.
+              <h2 className="text-xl font-black text-pink-600 uppercase mb-2">{dominant}</h2>
+              <p className="text-gray-600 leading-relaxed font-medium text-sm">
+                {variation.description}
               </p>
             </div>
           </div>
 
-          <div className="mt-8 p-4 bg-yellow-50 rounded-2xl border-2 border-yellow-200">
-            <p className="text-xs text-yellow-700 font-black uppercase mb-1 tracking-wider">💡 Expert Suggestion</p>
-            <p className="text-sm text-yellow-800 font-medium">Based on your RIASEC profile, you'd be amazing in <strong className="text-pink-600">Science</strong> or <strong className="text-pink-600">Pure Arts</strong> courses!</p>
+          <div className="mt-4 p-4 bg-yellow-50 rounded-2xl border-2 border-yellow-200">
+            <p className="text-[10px] text-yellow-700 font-black uppercase mb-1 tracking-wider">Expert Suggestion</p>
+            <p className="text-xs text-yellow-800 font-medium">{variation.suggestion}</p>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={downloadPDF}
           className="primary-button flex-1 flex items-center justify-center gap-2 py-4"
         >
           <Download className="w-5 h-5" /> Download My Report
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => window.print()}
-          className="primary-button flex-1 bg-white text-gray-500 border-2 border-gray-100 shadow-none hover:bg-gray-50 flex items-center justify-center gap-2 py-4"
+          className="primary-button flex-1 bg-white/50 text-gray-600 border-2 border-white/50 shadow-none hover:bg-white flex items-center justify-center gap-2 py-4 backdrop-blur-sm"
         >
           <Printer className="w-5 h-5" /> Print Result
-        </button>
+        </motion.button>
       </div>
     </motion.div>
   );
@@ -386,9 +510,14 @@ const AdminLogin = ({ onLogin }) => {
           />
         </div>
         {error && <p className="text-red-500 text-sm font-bold animate-shake">{error}</p>}
-        <button type="submit" className="primary-button bg-purple-600 hover:bg-purple-700 mt-6 flex items-center justify-center gap-2">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="submit"
+          className="primary-button bg-purple-600 hover:bg-purple-700 mt-6 flex items-center justify-center gap-2"
+        >
           Beam Me In <Rocket className="w-5 h-5" />
-        </button>
+        </motion.button>
       </form>
     </motion.div>
   );
@@ -430,7 +559,7 @@ const AdminDashboard = ({ onLogout }) => {
       animate={{ opacity: 1 }}
       className="max-w-6xl mx-auto w-full px-4 space-y-6 pb-20"
     >
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border-2 border-purple-50">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-sm border-2 border-purple-50">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <LayoutDashboard className="text-purple-500 w-6 h-6" />
@@ -439,26 +568,30 @@ const AdminDashboard = ({ onLogout }) => {
           <p className="text-gray-500">Managing {students.length} future leaders</p>
         </div>
         <div className="flex gap-3">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={downloadCSV}
             className="primary-button bg-green-500 hover:bg-green-600 flex items-center justify-center gap-2"
           >
             <FileSpreadsheet className="w-5 h-5" /> Export CSV
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onLogout}
-            className="primary-button bg-gray-100 text-gray-600 hover:bg-gray-200 shadow-none border-2 border-gray-200 flex items-center justify-center gap-2"
+            className="primary-button bg-gray-100/50 text-gray-600 hover:bg-gray-200/50 shadow-none border-2 border-gray-200 flex items-center justify-center gap-2 backdrop-blur-sm"
           >
             <LogOut className="w-5 h-5" /> Logout
-          </button>
+          </motion.button>
         </div>
       </div>
 
-      <div className="card-white max-w-none overflow-hidden p-0">
+      <div className="card-white max-w-none overflow-hidden p-0 backdrop-blur-sm bg-white/80">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
+              <tr className="bg-gray-50/50 border-b border-gray-100">
                 <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Student</th>
                 <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">School/District</th>
                 <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Mobile</th>
@@ -481,7 +614,7 @@ const AdminDashboard = ({ onLogout }) => {
                     <p className="text-sm font-mono text-gray-600">{student.mobile}</p>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                    <span className="px-3 py-1 bg-pink-100/50 text-pink-600 rounded-full text-xs font-bold uppercase tracking-wider">
                       {student.trait_dominance}
                     </span>
                   </td>
@@ -526,7 +659,12 @@ function App() {
       };
 
       const res = await axios.post(`${API_BASE}/api/submit`, payload);
-      setStudentData({ ...studentData, scores: res.data.scores, dominant_trait: res.data.dominant_trait });
+      setStudentData({
+        ...studentData,
+        scores: res.data.scores,
+        dominant_trait: res.data.dominant_trait,
+        suggested_stream: res.data.suggested_stream
+      });
       setReportId(res.data.id);
       setStep(2);
     } catch (err) {
@@ -542,11 +680,32 @@ function App() {
     <div className="app-container">
       <header className="py-6 flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.reload()}>
-          <div className="w-12 h-12 bg-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform">
+          <motion.div
+            whileHover={{ rotate: 12, scale: 1.1 }}
+            className="w-12 h-12 bg-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3"
+          >
             <Rocket className="text-white w-7 h-7" />
-          </div>
+          </motion.div>
           <div>
-            <h1 className="text-2xl font-black text-gray-800 tracking-tighter">SOPHIA <span className="text-pink-500">ACADEMY</span></h1>
+            <div className="sparkle-container">
+              <h1 className="text-2xl font-black tracking-tighter sparkle-text">SOPHIA ACADEMY</h1>
+              <motion.div
+                className="sparkle-star"
+                style={{ top: '-5px', right: '-10px' }}
+                animate={{ rotate: [0, 90, 0], scale: [1, 1.5, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
+                <Sparkles size={14} fill="#fcd34d" />
+              </motion.div>
+              <motion.div
+                className="sparkle-star"
+                style={{ bottom: '2px', left: '-15px' }}
+                animate={{ rotate: [0, -90, 0], scale: [1, 1.3, 1] }}
+                transition={{ repeat: Infinity, duration: 2.5, delay: 0.5 }}
+              >
+                <Sparkles size={10} fill="#60a5fa" />
+              </motion.div>
+            </div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest -mt-1">Future Guidance Hub</p>
           </div>
         </div>
@@ -557,12 +716,16 @@ function App() {
           {loading ? (
             <motion.div
               key="loader"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.2 }}
               className="flex flex-col items-center justify-center py-40"
             >
-              <div className="w-20 h-20 border-6 border-pink-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-              <p className="text-2xl font-black text-pink-600 animate-pulse">CREATING MAGIC...</p>
+              <div className="relative">
+                <div className="w-24 h-24 border-8 border-pink-100 rounded-full"></div>
+                <div className="w-24 h-24 border-t-8 border-pink-500 rounded-full animate-spin absolute top-0 left-0"></div>
+              </div>
+              <p className="text-2xl font-black text-pink-600 mt-8 animate-pulse">ANALYZING YOUR FUTURE...</p>
             </motion.div>
           ) : (
             <>
@@ -602,4 +765,3 @@ function App() {
 }
 
 export default App;
-

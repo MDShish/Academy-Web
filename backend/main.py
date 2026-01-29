@@ -67,8 +67,6 @@ CATEGORIES = {
     "Conventional": [6, 12, 18, 24, 30, 36, 42, 48, 54, 60]
 }
 
-REVERSE_SCORED = [10, 20, 30, 40, 50, 60] # Just an example
-
 def calculate_scores(responses):
     final_scores = {cat: 0 for cat in CATEGORIES}
     
@@ -76,8 +74,6 @@ def calculate_scores(responses):
         total = 0
         for q_id in q_ids:
             val = responses.get(str(q_id), 3) # Default neutral
-            if q_id in REVERSE_SCORED:
-                val = 6 - val
             total += val
         final_scores[cat] = (total / 50) * 100 # Percentage
         
@@ -89,8 +85,22 @@ def calculate_scores(responses):
 async def submit_assessment(data: AssessmentSubmission):
     db = SessionLocal()
     try:
-        scores = calculate_scores(data.responses)
-        dominant_trait = max(scores, key=scores.get)
+        raw_scores = calculate_scores(data.responses)
+        
+        # Apply Commerce Bias (1.5x for Enterprising and Conventional)
+        weighted_scores = raw_scores.copy()
+        for trait in ["Enterprising", "Conventional"]:
+            weighted_scores[trait] *= 1.5
+            
+        dominant_trait = max(weighted_scores, key=weighted_scores.get)
+        
+        # Determine Suggested Stream
+        if dominant_trait in ["Enterprising", "Conventional"]:
+            suggested_stream = "Commerce"
+        elif dominant_trait in ["Realistic", "Investigative"]:
+            suggested_stream = "Science"
+        else: # Artistic, Social
+            suggested_stream = "Arts"
         
         db_student = StudentScore(
             name=data.student_info.name,
@@ -98,7 +108,7 @@ async def submit_assessment(data: AssessmentSubmission):
             district=data.student_info.district,
             mobile=data.student_info.mobile,
             board=data.student_info.board,
-            scores=scores,
+            scores=raw_scores, # Store raw scores in DB
             trait_dominance=dominant_trait
         )
         db.add(db_student)
@@ -107,8 +117,9 @@ async def submit_assessment(data: AssessmentSubmission):
         
         return {
             "id": db_student.id,
-            "scores": scores,
-            "dominant_trait": dominant_trait
+            "scores": raw_scores,
+            "dominant_trait": dominant_trait,
+            "suggested_stream": suggested_stream
         }
     finally:
         db.close()
