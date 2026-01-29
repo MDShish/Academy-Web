@@ -5,7 +5,9 @@ import questionsData from './questions.json';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE =
+  import.meta.env.VITE_API_URL || "https://academy-backend-skp6.onrender.com";
+
 
 // --- Sub-Components ---
 
